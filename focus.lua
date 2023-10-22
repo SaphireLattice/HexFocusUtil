@@ -11,24 +11,25 @@ local iota = focus.readIota()
 
 print(iotaType, iota)
 
-local isPatternList = true
+function gotPatterns(iota)
+    local isPatternList = true
 
-if iotaType ~= "hexcasting:list" then
-    isPatternList = false
-else
     for i = 1, #iota do
+        print(i, iota[i].angles)
         if
             type(iota[i]) ~= "table"
-            or iota[i].angles == nil
+            or (
+                iota[i].angles == nil
+                and not gotPatterns(iota[i])
+            )
         then
+            print("Not a valid iota " .. i)
             isPatternList = false
+            break
         end
     end
-end
 
-function gotPatterns()
     if not isPatternList then
-        print("Expected a list of patterns")
         return false
     end
     return true
@@ -47,17 +48,43 @@ if args[1] == "print" then
             print(angles)
         end
     end
+    return
 end
 
-if args[1] == "save" and args[2] ~= nil then
-    if not gotPatterns() then return end
+function readIota(iotaRead)
+    if iotaRead.startDir and iotaRead.angles then
+        local knownPattern = hexPatterns.patterns[iotaRead.angles]
+        if knownPattern then
+            return iotaRead.startDir .. " " .. knownPattern[1]
+        end
+        return iotaRead.startDir .. " " ..iotaRead.angles
+    end
+
+    local out = {}
+    for i = 1, #iotaRead do
+        local iota = iotaRead[i]
+        table.insert(out, readIota(iota))
+    end
+
+    return table.concat(out, "\n")
+end
+
+if args[1] == "read" and args[2] ~= nil then
+    if not gotPatterns(iota) then
+        print("Requires readable iotas!")
+        return
+    end
     local saveFile, err = io.open(args[2], "w")
     if not saveFile then error(err) end
-    for i = 1, #iota do
-        saveFile:write(iota[i].startDir .. " ")
-        saveFile:write(iota[i].angles .. "\n")
-    end
+
+    saveFile:write(readIota(iota))
+
+    --for i = 1, #iota do
+    --    saveFile:write(iota[i].startDir .. " ")
+    --    saveFile:write(iota[i].angles .. "\n")
+    --end
     print("Saved")
+    return
 end
 
 if args[1] == "write" and args[2] ~= nil then
@@ -95,6 +122,10 @@ if args[1] == "write" and args[2] ~= nil then
                 ]
             end
 
+            if hexPatterns.directions[dir] then
+                dir = hexPatterns.directions[dir]
+            end
+
             table.insert(newIota, {
                 startDir = dir or "EAST",
                 angles = angles
@@ -103,4 +134,10 @@ if args[1] == "write" and args[2] ~= nil then
     end
     focus.writeIota(newIota)
     print("Wrote iota: ".. #newIota .." patterns")
+    return
 end
+
+print("Usage: focus [command] (...)")
+print(" - print - Print focus contents out")
+print(" - read [filename] - Save focus info into a file")
+print(" - write [filename] - Read a spell into a focus")

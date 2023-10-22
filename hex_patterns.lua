@@ -25,12 +25,87 @@ local patterns = {
     ["eee"] = {
         "]",
         dir = "E"
+    },
+    ["deaqq"] = {
+        "eval",
+        dir = "SE"
+    },
+    ["dadad"] = {
+        "foreach",
+        dir = "NE"
+    },
+    ["aqqqqq"] = {
+        "read_offhand",
+        dir = "E"
+    },
+    ["aqqqqqe"] = {
+        "readable_offhand",
+        dir = "E"
+    },
+    ["awdd"] = {
+        "choose",
+        name = "Augur's Exaltation",
+        dir = "NE",
+        arg = { "bool", "any", "any" },
+        ret = { "any" }
+    },
+    ["dd"] = {
+        "pos",
+        dir = "NE"
+    },
+    ["aa"] = {
+        "eye_pos",
+        dir = "N"
+    },
+    ["wa"] = {
+        "eye_dir",
+        dir = "N"
+    },
+    ["wqaawdd"] = {
+        "raycast",
+        dir = "E"
+    },
+    ["weddwaa"] = {
+        "raycast_face",
+        dir = "E"
+    },
+    ["aadaa"] = {
+        "copy",
+        dir = "E"
+    },
+    ["aadadaaw"] = {
+        "copy_2",
+        dir = "E"
+    },
+    ["aawdd"] = {
+        "swap",
+        dir = "E"
+    },
+    ["ddqdd"] = {
+        "swap_201",
+        dir = "NE"
+    },
+    ["qqd"] = {
+        "create_light",
+        dir = "NE"
+    },
+    ["qwaeawq"] = {
+        "unwrap",
+        dir = "NW"
+    },
+    ["waaw"] = {
+        "sum",
+        dir = "NE"
+    },
+    ["eaqa"] = {
+        "mediafy",
+        dir = "W"
     }
 }
 
 local function encode(code)
     local found = aliases[code]
-    if found and found:gsub("[aqwedAQWED_]", "") == "" then
+    if found and found:gsub("[aqwedsAQWEDS_]", "") == "" then
         return found
     end
 
