@@ -1,13 +1,15 @@
-A program to read and write pattern data (eventually more) on a focus from [Hex Casting](https://modrinth.com/mod/hex-casting) Minecraft mod. Requires [Ducky Peripherals](https://modrinth.com/mod/ducky-periphs)
-
 # Usage
 
-No install script for now. Use `wget` for the raw files for now. Can put them anywhere.
+Read and write spell data from a [Hex Casting](https://modrinth.com/mod/hex-casting) focus, via a [Ducky Peripherals](https://modrinth.com/mod/ducky-periphs) Focal Port.
 
 `focus [command] (...)`
 - `print` - Print focus contents out
 - `read [filename]` - Save focus info into a file
 - `write [filename]` - Read a spell into a focus
+
+Files are in format of `DIRECTION aqwed` per line. Comments use `//`.
+
+No install script for now. Use `wget` for the raw files for now. Can put them anywhere.
 
 No guarantee that it will work with more than one [Focal Port](https://github.com/SamsTheNerd/ducky-periphs/wiki/Focal-Port)
 
